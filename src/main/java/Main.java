@@ -2,6 +2,8 @@ package main.java;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.util.Arrays.*;
 
@@ -10,30 +12,27 @@ public class Main {
 
     public static void main(String[] args) {
 
-        FilmsCollection filmsCollection = new FilmsCollection();
 
-        //Create actors
-        Actor actor1 = new Actor("Tom", "Hanks");
-        Actor actor2 = new Actor("Catherine", "Zeta-Jones");
-        Actor actor3 = new Actor("Helen", "Hunt");
-        Actor actor4 = new Actor("Antonio", "Banderas");
-        Actor actor5 = new Actor("Anthony", "Hopkins");
+
+        //Create actors and films
+        Set<Actor> actors = new HashSet<>();
+        for (int i=0; i<=3; i++) {
+            actors.add(new Actor("FirstName"+i,"LastName"+i, "Country"+i));
+        }
+        Film film1 = new Film("Film1" ,"Country1", 2000, actors);
+
+        Set<Actor> actors1 = new HashSet<>();
+        for (int i=1; i<=5; i++) {
+            actors.add(new Actor("FirstName"+i,"LastName"+i, "Country"+i));
+        }
+        Film film2 = new Film("Film1" ,"Country1", 2000, actors);
+
+        Set<Film> films = new HashSet<>();
+        films.add(film1);
+        films.add(film2);
 
         //Create films collection
-        Actor [] arrayActors = {actor1,actor2};
-        ArrayList<Actor> listActors = new ArrayList<Actor> (Arrays.asList(arrayActors));
-        Film film = new Film("The Terminal", 2004, listActors);
-        filmsCollection.addFilmToCollection(film);
-
-        arrayActors[1] = actor3;
-        listActors = new ArrayList<Actor> (Arrays.asList(arrayActors));
-        film = new Film("Cast Away", 2000, listActors);
-        filmsCollection.addFilmToCollection(film);
-
-        Actor [] arrayActors1 = {actor2, actor4, actor5};
-        listActors  = new ArrayList<Actor> (Arrays.asList(arrayActors));
-        film = new Film("The Mask of Zorro", 1998, listActors);
-        filmsCollection.addFilmToCollection(film);
+        FilmsCollection filmsCollection = new FilmsCollection(films);
 
 
         //Serialisation
