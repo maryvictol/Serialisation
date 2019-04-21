@@ -47,10 +47,18 @@ public class Actor implements Serializable {
     }
 
     @Override
+    public int hashCode(){
+        return Objects.hash(firstName, lastName, country);
+    }
+
+    @Override
     public boolean equals(Object compareObject) {
         if (compareObject == null) {
             return false;
         }
+        if (this == compareObject) {
+            return true;
+        };
         if (!(compareObject instanceof Actor)) {
             return false;
         }

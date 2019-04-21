@@ -1,11 +1,12 @@
 package main.java;
+
 import java.io.*;
 import java.util.*;
 
 public class FilmsCollection implements Serializable {
     private Set<Film> films;
 
-    public FilmsCollection(){
+    public FilmsCollection() {
         films = new HashSet<Film>();
     }
 
@@ -19,18 +20,18 @@ public class FilmsCollection implements Serializable {
         setFilms(films);
     }
 
-    public void setFilms(Film film){
+    public void setFilms(Film film) {
         if (films == null) {
             throw new IllegalArgumentException("Films list shouldn't be null.");
         }
         this.films.add(film);
     }
 
-    public void setFilms(Set<Film> films){
+    public void setFilms(Set<Film> films) {
         if (films == null) {
             throw new IllegalArgumentException("Films list shouldn't be null.");
         }
-        this.films=films;
+        this.films.addAll(films);
     }
 
     public Set<Film> getFilms() {
@@ -45,7 +46,7 @@ public class FilmsCollection implements Serializable {
         films.remove(film);
     }
 
-    public void serialisationCollection(Object object, String filePath) {
+    public static void serialisationCollection(Object object, String filePath) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(object);
         } catch (IOException e) {
@@ -53,28 +54,33 @@ public class FilmsCollection implements Serializable {
         }
     }
 
-    public void deserialisationCollection(String fileName) {
-        try (ObjectInputStream in =  new ObjectInputStream(new FileInputStream(fileName))) {
-            FilmsCollection filmsCollection = (FilmsCollection)in.readObject();
+    public static FilmsCollection deserialisationCollection(String fileName) {
+        FilmsCollection filmsCollection = null;
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
+            filmsCollection = (FilmsCollection) in.readObject();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Не удается найти указанный файл " + fileName);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            System.out.println("Deserialisation error");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return filmsCollection;
     }
 
     @Override
     public String toString() {
         StringBuilder filmCollectionInfo = new StringBuilder("Films collection:");
-        if (films.size()!=0) {
+        if (films.size() != 0) {
             for (Film film : films) {
                 filmCollectionInfo.append(film.toString());
             }
         }
         return filmCollectionInfo.toString();
     }
+
 
 }
 

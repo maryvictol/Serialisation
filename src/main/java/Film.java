@@ -16,6 +16,7 @@ public class Film implements Serializable {
         setFilmName(filmName);
         setCountry(country);
         setRelease(release);
+        this.mainFilmActors = new HashSet<>();
         setMainActors(mainFilmActors);
     }
 
@@ -23,6 +24,7 @@ public class Film implements Serializable {
         setFilmName(filmName);
         setCountry(country);
         setRelease(release);
+        this.mainFilmActors = new HashSet<>();
         setMainActors(actor);
     }
 
@@ -63,7 +65,6 @@ public class Film implements Serializable {
         if (actor == null) {
             throw new IllegalArgumentException("Actors List shouldn't be null.");
         }
-        this.mainFilmActors = new HashSet<>();
         this.mainFilmActors.add(actor);
     }
 
@@ -71,8 +72,7 @@ public class Film implements Serializable {
         if (mainFilmActors == null) {
             throw new IllegalArgumentException("Actors List shouldn't be null.");
         }
-        this.mainFilmActors = new HashSet<>();
-        this.mainFilmActors = mainFilmActors;
+        this.mainFilmActors.addAll(mainFilmActors);
     }
 
     public Set<Actor> getMainActors() {
@@ -91,9 +91,21 @@ public class Film implements Serializable {
     }
 
     @Override
+    public int hashCode(){
+        int mainFilmActorsHashCode = 0;
+        for (Actor actor : mainFilmActors) {
+            mainFilmActorsHashCode += Objects.hashCode(actor);
+        }
+        return Objects.hash(filmName, country, release)+ mainFilmActorsHashCode;
+    }
+
+    @Override
     public boolean equals(Object compareObject) {
         if (compareObject == null) {
             return false;
+        }
+        if (this == compareObject) {
+            return true;
         }
         if (!(compareObject instanceof Film)) {
             return false;

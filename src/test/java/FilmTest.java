@@ -55,4 +55,49 @@ public class FilmTest {
         Film film = new Film("FilmName" ,"Country", 0, new Actor("FirstName","LastName", "Country"));
     }
 
+    @Test
+    public void addActorNotFromFilmList() {
+        Film newFilm = createFilmForTest("Film1", "Country1", 2000, 5);
+        newFilm.addActor(new Actor("FirstName6","LastName6", "Country6"));
+        Set<Actor> actors = newFilm.getMainActors();
+        assertEquals(6, actors.size());
+    }
+
+    @Test
+    public void addActorAlreadyAddedToFilmList() {
+        Film newFilm = createFilmForTest("Film1", "Country1", 2000, 7);
+        int initialActorsNumber = newFilm.getMainActors().size();
+        newFilm.addActor(new Actor("FirstName6","LastName6", "Country6"));
+        Set<Actor> actors = newFilm.getMainActors();
+        assertEquals(initialActorsNumber, actors.size());
+    }
+
+    @Test
+    public void deleteExistingActor() {
+        Film newFilm = createFilmForTest("Film1", "Country1", 2000, 10);
+        int initialActorsNumber = newFilm.getMainActors().size();
+        newFilm.deleteActor(new Actor("FirstName6","LastName6", "Country6"));
+        Set<Actor> actors = newFilm.getMainActors();
+        assertEquals(initialActorsNumber-1, actors.size());
+    }
+
+    @Test
+    public void deleteNonExistingActor() {
+        Film newFilm = createFilmForTest("Film1", "Country1", 2000, 10);
+        int initialActorsNumber = newFilm.getMainActors().size();
+        newFilm.deleteActor(new Actor("FirstName11","LastName11", "Country11"));
+        Set<Actor> actors = newFilm.getMainActors();
+        assertEquals(initialActorsNumber, actors.size());
+    }
+
+    //Create film for tests with specify number of Actors
+    public static Film createFilmForTest(String filmName, String country, int release, int numberActors){
+        Set<Actor> actors = new HashSet<>();
+        for (int i=0; i<numberActors; i++) {
+            actors.add(new Actor("FirstName"+i,"LastName"+i, "Country"+i));
+        }
+        Film film = new Film(filmName ,country, release, actors);
+        return film;
+    }
+
 }
